@@ -1,0 +1,5 @@
+
+Para reiniciar la tabla en id 1
+ALTER TABLE pacientes AUTO_INCREMENT = 1;
+
+
