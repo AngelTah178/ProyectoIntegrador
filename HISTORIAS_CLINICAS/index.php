@@ -11,8 +11,12 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+$condicion = "";
 
-
+if (isset($_GET['buscar']) && !empty(trim($_GET['buscar']))) {
+    $busqueda = $conn->real_escape_string($_GET['buscar']);
+    $condicion = "WHERE p.nombre_paciente LIKE '%$busqueda%'";
+}
 $sql = "
 SELECT h.*, 
        p.nombre_paciente, 
@@ -25,10 +29,11 @@ SELECT h.*,
        p.estado_civil
 FROM historias h
 JOIN pacientes p ON h.id_paciente = p.id_paciente
+$condicion
 ORDER BY h.id_historia ASC";
 $result = $conn->query($sql);
 ?>
-
+<!--FIN DE PHP PARA MOSTRAR-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,6 +60,15 @@ $result = $conn->query($sql);
     <a class="nuevo" href="registroPaciente.php">CREAR NUEVA HISTORIA</a>
 
     </div>
+
+    <div class = "contenedor_Buscador">
+        <form method="GET" action="index.php" class="form-buscador">
+    <input type="text" name="buscar" placeholder="Buscar">
+    <button type="submit">Buscar</button>
+</form>
+
+    </div>
+
     <br>
 
     <div class="historias-container">
