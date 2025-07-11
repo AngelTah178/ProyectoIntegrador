@@ -15,7 +15,7 @@ $condicion = "";
 
 if (isset($_GET['buscar']) && !empty(trim($_GET['buscar']))) {
     $busqueda = $conn->real_escape_string($_GET['buscar']);
-    $condicion = "WHERE p.nombre_paciente LIKE '%$busqueda%'";
+    $condicion = "WHERE p.nombre_paciente  LIKE '%$busqueda%' OR p.apellido_p LIKE '%$busqueda%'";
 }
 $sql = "
 SELECT h.*, 
@@ -78,45 +78,17 @@ $result = $conn->query($sql);
                 echo "
                 <div class='historias'>
                     <div class='info'>
+                        <table> 
+                        <p><span class='label'>Nombre Pa:</span> {$row['nombre_paciente']}</p>
+                         <td>" . htmlspecialchars($row['fecha']) . "</td>
                         
-                        <p><span class='label'>Nombre del paciente:</span> {$row['nombre_paciente']}</p>
-                        <p><span class='label'>Apellido paterno:</span> {$row['apellido_p']}</p>
-                        <p><span class='label'>Apellido materno:</span> {$row['apellido_m']}</p>
-                        <p><span class='label'>Fecha nacimiento:</span> {$row['fecha_nacimiento']}</p>
-                        <p><span class='label'>Sexo:</span> {$row['sexo']}</p>
-                        <p><span class='label'>telefono:</span> {$row['telefono']}</p>
-                        <p><span class='label'>Ocupación:</span> {$row['ocupacion']}</p>
-                        <p><span class='label'>Estado civil:</span> {$row['estado_civil']}</p>
-                        <p><span class='label'>Motivo consulta:</span> {$row['motivo_consulta']}</p>
-                        <p><span class='label'>Peso:</span> {$row['peso']}</p>
-                        <p><span class='label'>IMC:</span> {$row['imc']}</p>
-                        <p><span class='label'>IGC:</span> {$row['igc']}</p>
-                        <p><span class='label'>Observaciones:</span> {$row['observaciones']}</p>
+                        </table>
+
+                        <div class = 'Acciones'>
+                        <a class='boton' href='visualizarHistoria.php?id_historia={$row['id_historia']}'>Visualizar historia</a>
+                         </div>";
 
 
-
-                    </div>
-                    <table>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Procedimiento y/o tratamiento</th>
-                        </tr>";
-
-    
-                    echo "<tr>
-                              <td>" . htmlspecialchars($row['fecha']) . "</td>
-        <td>" . htmlspecialchars($row['tratamiento']) . "</td>
-                          </tr>";
-                
-
-                echo "</table>
-                <br>
-                    <div class='acciones'>
-                        <a class='boton' href='update.php?id_historia={$row['id_historia']}'>Modificar consulta</a>
-                        <a class='boton' href='javascript:void(0);' onclick='confirmDeletion(" . htmlspecialchars($row['id_historia']) . ");'>ELIMINAR HISTORIA MÉDICA</a>
-                    </div>
-                </div>
-                <br>";
             }
         } else {
             echo "<p>No hay historias clínicas</p>";
