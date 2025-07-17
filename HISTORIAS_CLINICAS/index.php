@@ -4,6 +4,14 @@ $username = "root";
 $password = "";
 $dbname = "historias_clinicas";
 
+//proteger
+session_start();
+
+if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
+    header("Location: index.php");
+    exit;
+}
+
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -53,6 +61,7 @@ $result = $conn->query($sql);
     <header class="titulo">
         <h1>Historias Clínicas Dermatología</h1>
     </header>
+<a href="logout.php">Cerrar sesión</a>
 
     <br>
 
@@ -79,7 +88,8 @@ $result = $conn->query($sql);
                 <div class='historias'>
                     <div class='info'>
                         <table> 
-                        <p><span class='label'>Nombre Pa:</span> {$row['nombre_paciente']}</p>
+                        <p><span class='label'>Nombre completo:</span> {$row['nombre_paciente']} {$row['apellido_p']} {$row['apellido_m']}</p>
+
                          <td>" . htmlspecialchars($row['fecha']) . "</td>
                         
                         </table>

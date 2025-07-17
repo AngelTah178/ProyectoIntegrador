@@ -3,7 +3,13 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "historias_clinicas";
+//proteger
+session_start();
 
+if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
+    header("Location: index.php");
+    exit;
+}
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -66,8 +72,18 @@ $result = $conn->query($sql);
     echo "<p><strong>imc:</strong> " . $row['imc'] . "</p>";
     echo "<p><strong>igc:</strong> " . $row['igc'] . "</p>";
     echo "<p><strong>Tratamiento:</strong> " . $row['tratamiento'] . "</p>";
-    echo "<p><strong>Observaciones:</strong> " . $row['observaciones'] . "</p>";
-                
+    echo "<p><strong>Observaciones:</strong> " . $row['observaciones'] . "</p>
+
+      <table>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Procedimiento y/o tratamiento</th>
+                        </tr>";
+
+   
+
+    
+    
                 echo "</table>
                 <br>
                     <div class='acciones'>

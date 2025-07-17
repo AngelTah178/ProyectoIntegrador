@@ -3,7 +3,13 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "historias_clinicas";
+//proteger
+session_start();
 
+if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
+    header("Location: login.php");
+    exit;
+}
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 

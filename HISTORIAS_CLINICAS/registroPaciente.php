@@ -7,6 +7,8 @@
     <title>Registrar nuevo paciente</title>
 </head>
 <body>
+    <a href="logout.php">Cerrar sesión</a>
+
     <h1>Crear Nueva Historia Clínica</h1>
     <div class="form-container">
         <form action="create.php" method="POST">
