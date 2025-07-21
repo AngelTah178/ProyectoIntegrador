@@ -65,13 +65,12 @@ $result = $conn->query($sql);
     echo "<p><strong>Sexo:</strong> " . $row['sexo'] . "</p>";
                
     echo "<h2>Historia Clínica</h2>";
-    echo "<p><strong>Fecha:</strong> " . $row['fecha'] . "</p>";
+
     echo "<p><strong>Motivo consulta:</strong> " . $row['motivo_consulta'] . "</p>";
     echo "<p><strong>Peso:</strong> " . $row['peso'] . "</p>";
     echo "<p><strong>Altura:</strong> " . $row['altura'] . "</p>";
     echo "<p><strong>imc:</strong> " . $row['imc'] . "</p>";
     echo "<p><strong>igc:</strong> " . $row['igc'] . "</p>";
-    echo "<p><strong>Tratamiento:</strong> " . $row['tratamiento'] . "</p>";
     echo "<p><strong>Observaciones:</strong> " . $row['observaciones'] . "</p>
 
       <table>
@@ -79,8 +78,16 @@ $result = $conn->query($sql);
                             <th>Fecha</th>
                             <th>Procedimiento y/o tratamiento</th>
                         </tr>";
+    $fechas = explode("\n", $row['fecha']);
+                $procedimientos = explode("\n", $row['tratamiento']);
+                for ($i = 0; $i < count($fechas); $i++) {
+                    echo "<tr>
+                            <td>{$fechas[$i]}</td>
+                            <td>{$procedimientos[$i]}</td>
+                          </tr>";
+                }
 
-   
+
 
     
     

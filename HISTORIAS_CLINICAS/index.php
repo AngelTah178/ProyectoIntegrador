@@ -25,6 +25,14 @@ if (isset($_GET['buscar']) && !empty(trim($_GET['buscar']))) {
     $busqueda = $conn->real_escape_string($_GET['buscar']);
     $condicion = "WHERE p.nombre_paciente  LIKE '%$busqueda%' OR p.apellido_p LIKE '%$busqueda%'";
 }
+
+$por_pagina = 10; // cantidad de resultados por página
+
+// Página actual (desde $_GET), por defecto es 1
+$pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+$inicio = ($pagina - 1) * $por_pagina;
+//fin de pag actual
+
 $sql = "
 SELECT h.*, 
        p.nombre_paciente, 
@@ -38,8 +46,19 @@ SELECT h.*,
 FROM historias h
 JOIN pacientes p ON h.id_paciente = p.id_paciente
 $condicion
-ORDER BY h.id_historia ASC";
+ORDER BY h.id_historia ASC
+   LIMIT $inicio, $por_pagina";
 $result = $conn->query($sql);
+
+///
+$total_query = "SELECT COUNT(*) as total FROM historias";
+$total_result = $conn->query($total_query);
+$total_filas = $total_result->fetch_assoc()['total'];
+
+// Total de páginas
+$total_paginas = ceil($total_filas / $por_pagina);
+
+
 ?>
 <!--FIN DE PHP PARA MOSTRAR-->
 <!DOCTYPE html>
@@ -84,13 +103,20 @@ $result = $conn->query($sql);
         <?php
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
+
+                //imrpimir ultima fecha
+                $fechas = explode("\n", $row['fecha']);
+                $ultima_fecha = htmlspecialchars(trim(end($fechas)));
+                //fin
+                
                 echo "
                 <div class='historias'>
                     <div class='info'>
                         <table> 
                         <p><span class='label'>Nombre completo:</span> {$row['nombre_paciente']} {$row['apellido_p']} {$row['apellido_m']}</p>
 
-                         <td>" . htmlspecialchars($row['fecha']) . "</td>
+                        
+                         <td>" . htmlspecialchars( $ultima_fecha) . "</td>
                         
                         </table>
 
@@ -98,8 +124,17 @@ $result = $conn->query($sql);
                         <a class='boton' href='visualizarHistoria.php?id_historia={$row['id_historia']}'>Visualizar historia</a>
                          </div>";
 
+      
+
 
             }
+                               // Mostrar botones
+echo "<div class='paginacion'>";
+for ($i = 1; $i <= $total_paginas; $i++) {
+    $active = ($i == $pagina) ? "style='font-weight:bold;'" : "";
+    echo "<a href='index.php?pagina=$i' $active> $i </a>";
+}
+echo "</div>";
         } else {
             echo "<p>No hay historias clínicas</p>";
         }

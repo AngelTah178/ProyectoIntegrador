@@ -6,40 +6,15 @@ $dbname = "historias_clinicas";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 $conn->set_charset("utf8");
-//proteger
-session_start();
 
+session_start();
 if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
     header("Location: login.php");
     exit;
 }
-//fin prote
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id_historia'])) {
-        $id_historia = $_GET['id_historia'];
-
-        $sql = "SELECT h.*, p.* FROM historias h 
-                JOIN pacientes p ON h.id_paciente = p.id_paciente 
-                WHERE h.id_historia = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $id_historia);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-        } else {
-            echo "No se encontró la historia clínica.";
-            exit;
-        }
-    } else {
-        echo "ID no especificado.";
-        exit;
-    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -56,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nueva_fecha = $_POST['nueva_fecha'];
     $nuevo_procedimiento = $_POST['nuevo_procedimiento'];
 
-    // Conseguimos id_paciente
+    // Obtener historia actual
     $sql = "SELECT * FROM historias WHERE id_historia = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id_historia);
@@ -74,13 +49,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha_existente = $historia['fecha'];
     $procedimiento_existente = $historia['tratamiento'];
 
-    // Concatenar nuevos valores
+    // Concatenar nuevas fechas y procedimientos con los existentes
+    $fecha_actualizada = !empty($nueva_fecha) 
+        ? ($fecha_existente ? $fecha_existente . "\n" . $nueva_fecha : $nueva_fecha) 
+        : $fecha_existente;
 
-$fecha_actualizada = $nueva_fecha;
-$procedimiento_actualizado = $nuevo_procedimiento;
+    $procedimiento_actualizado = !empty($nuevo_procedimiento) 
+        ? ($procedimiento_existente ? $procedimiento_existente . "\n" . $nuevo_procedimiento : $nuevo_procedimiento) 
+        : $procedimiento_existente;
 
-
-    // Actualizar paciente (sin lugar_residencia)
+    // Actualizar paciente
     $sql_p = "UPDATE pacientes SET 
                 nombre_paciente = ?, 
                 telefono = ?, 
@@ -112,41 +90,63 @@ $procedimiento_actualizado = $nuevo_procedimiento;
     $stmt_h->close();
     $conn->close();
 }
+
+// Carga de datos para mostrar formulario en GET
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if (isset($_GET['id_historia'])) {
+        $id_historia = $_GET['id_historia'];
+
+        $sql = "SELECT h.*, p.* FROM historias h 
+                JOIN pacientes p ON h.id_paciente = p.id_paciente 
+                WHERE h.id_historia = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id_historia);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+        } else {
+            echo "No se encontró la historia clínica.";
+            exit;
+        }
+    } else {
+        echo "ID no especificado.";
+        exit;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="update.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="update.css" />
     <title>Actualizar Historia Clínica</title>
 </head>
 <body>
     <h1>Actualizar Historia Clínica</h1>
     <div class="form-container">
         <form action="update.php" method="POST">
-            <!-- Campo oculto para el ID de la historia -->
             <input type="hidden" name="id_historia" value="<?php echo htmlspecialchars($row['id_historia']); ?>">
 
-            <!-- Datos del paciente -->
-         <label for="nombre_paciente">Nombre del paciente:</label>
-<input type="text" id="nombre_paciente" name="nombre_paciente" value="<?php echo htmlspecialchars($row['nombre_paciente']); ?>">
+            <label for="nombre_paciente">Nombre del paciente:</label>
+            <input type="text" id="nombre_paciente" name="nombre_paciente" value="<?php echo htmlspecialchars($row['nombre_paciente']); ?>">
 
-<label for="telefono">Teléfono:</label>
-<input type="text" id="telefono" name="telefono" value="<?php echo htmlspecialchars($row['telefono']); ?>">
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" value="<?php echo htmlspecialchars($row['telefono']); ?>">
 
-<label>Género:</label>
-<div class="radio-group">
-    <input type="radio" id="genero_h" name="genero" value="H" <?php echo ($row['sexo'] == 'H') ? 'checked' : ''; ?>>
-    <label for="genero_h">H</label>
-    <input type="radio" id="genero_m" name="genero" value="M" <?php echo ($row['sexo'] == 'M') ? 'checked' : ''; ?>>
-    <label for="genero_m">M</label>
-</div>
+            <label>Género:</label>
+            <div class="radio-group">
+                <input type="radio" id="genero_h" name="genero" value="H" <?php echo ($row['sexo'] == 'H') ? 'checked' : ''; ?>>
+                <label for="genero_h">H</label>
+                <input type="radio" id="genero_m" name="genero" value="M" <?php echo ($row['sexo'] == 'M') ? 'checked' : ''; ?>>
+                <label for="genero_m">M</label>
+            </div>
 
-<label for="ocupacion_actual">Ocupación Actual:</label>
-<input type="text" id="ocupacion_actual" name="ocupacion_actual" value="<?php echo htmlspecialchars($row['ocupacion']); ?>">
+            <label for="ocupacion_actual">Ocupación Actual:</label>
+            <input type="text" id="ocupacion_actual" name="ocupacion_actual" value="<?php echo htmlspecialchars($row['ocupacion']); ?>">
 
-            <!-- Datos de historia -->
             <label for="motivo_consulta">Motivo de Consulta:</label>
             <textarea id="motivo_consulta" name="motivo_consulta" required><?php echo htmlspecialchars($row['motivo_consulta']); ?></textarea>
 

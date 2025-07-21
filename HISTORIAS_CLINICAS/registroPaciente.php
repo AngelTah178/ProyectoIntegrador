@@ -46,7 +46,7 @@
 <!--FIN DEL FORM DEL REGISTRO DEL PACIENTE-->
 
              <label for="fecha">Fecha:</label>
-            <input type="datetime-local" id="fecha" name="fecha" required>
+            <input type="date" id="fecha" name="fecha" required>
 
         <label for="motivo_consulta">Motivo de la consulta:</label>
             <input type="text" id="motivo_consulta" name="motivo_consulta" required>

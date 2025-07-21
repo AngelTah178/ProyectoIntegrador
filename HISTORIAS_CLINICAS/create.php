@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $altura = $_POST['altura'];
         $imc = $_POST['imc'];
         $igc = $_POST['igc']; 
-        $tratamiento = $_POST['tratamiento'];   
+$tratamiento = $_POST['tratamiento'];
         $observaciones = $_POST['observaciones'];        
 
         // Insertar historia con id paciente
