@@ -43,7 +43,7 @@
                 
             </textarea>
 
-<!--FIN DEL FORM DEL REGISTRO DEL PACIENTE-->
+<!--REGISTRO DE HISTORIA-->
 
              <label for="fecha">Fecha:</label>
             <input type="date" id="fecha" name="fecha" required>
@@ -68,7 +68,17 @@
 
         <label for="observaciones">Observaciones:</label>
             <input type="text" id="observaciones" name="observaciones" required>
-            <input type="submit" value="CREAR">
+<!--DOCTOR-->
+            <label>Área:</label>
+            <div class="radio-group">
+            <input type="radio" id="Gine" name="area" value="Ginecología" required>
+            <label for="Gine">Ginecología</label>
+
+            <input type="radio" id="Derma" name="area" value="Dermatología" required>
+            <label for="Derma">Dermatología</label>
+            </div>
+       <input type="submit" value="CREAR">
+
         </form>
 
     </div>

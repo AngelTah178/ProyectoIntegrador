@@ -28,6 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // DATOS DE HISTORIA
     $motivo_consulta = $_POST['motivo_consulta'];
+    $peso = $_POST['peso'];
+    $altura = $_POST['altura'];
+        $imc= $_POST['imc'];
+    $igc = $_POST['igc'];
+
     $nueva_fecha = $_POST['nueva_fecha'];
     $nuevo_procedimiento = $_POST['nuevo_procedimiento'];
 
@@ -71,12 +76,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Actualizar historia
     $sql_h = "UPDATE historias SET 
-                motivo_consulta = ?, 
-                fecha = ?, 
-                tratamiento = ?
-              WHERE id_historia = ?";
-    $stmt_h = $conn->prepare($sql_h);
-    $stmt_h->bind_param("sssi", $motivo_consulta, $fecha_actualizada, $procedimiento_actualizado, $id_historia);
+            motivo_consulta = ?, 
+            peso = ?, 
+            altura = ?, 
+            imc = ?, 
+            igc = ?, 
+            fecha = ?, 
+            tratamiento = ?
+          WHERE id_historia = ?";
+$stmt_h = $conn->prepare($sql_h);
+$stmt_h->bind_param("sddddssi", 
+    $motivo_consulta, 
+    $peso, 
+    $altura, 
+    $imc, 
+    $igc, 
+    $fecha_actualizada, 
+    $procedimiento_actualizado, 
+    $id_historia
+);
+
     
     if ($stmt_h->execute()) {
         header("Location: index.php");
@@ -149,6 +168,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
             <label for="motivo_consulta">Motivo de Consulta:</label>
             <textarea id="motivo_consulta" name="motivo_consulta" required><?php echo htmlspecialchars($row['motivo_consulta']); ?></textarea>
+
+             <label for="peso">Peso:</label>
+            <textarea id="peso" name="peso" required><?php echo htmlspecialchars($row['peso']); ?></textarea>
+
+             <label for="altura">Altura:</label>
+            <textarea id="altura" name="altura" required><?php echo htmlspecialchars($row['altura']); ?></textarea>
+
+             <label for="imc">IMC:</label>
+            <textarea id="imc" name="imc" required><?php echo htmlspecialchars($row['imc']); ?></textarea>
+
+             <label for="igc">IGC:</label>
+            <textarea id="igc" name="igc" required><?php echo htmlspecialchars($row['igc']); ?></textarea>
 
             <label for="nueva_fecha">Agregar Nueva Fecha:</label>
             <input type="date" id="nueva_fecha" name="nueva_fecha" required>

@@ -52,14 +52,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $imc = $_POST['imc'];
         $igc = $_POST['igc']; 
 $tratamiento = $_POST['tratamiento'];
-        $observaciones = $_POST['observaciones'];        
+        $observaciones = $_POST['observaciones']; 
+        $area = $_POST['area'];
+        $id_doctor = ($area === 'Dermatología') ? 1 : 2;       
 
         // Insertar historia con id paciente
-        $sql_historia = "INSERT INTO historias (id_paciente, fecha, motivo_consulta, peso, altura, imc, igc, tratamiento, observaciones)
-                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $statement2 = $conn->prepare($sql_historia);
-        $statement2->bind_param("issddddss", $id_paciente, $fecha, $motivo_consulta, $peso, $altura, $imc, $igc, $tratamiento, $observaciones);
-        $statement2->execute();
+        $sql_historia = "INSERT INTO historias (id_paciente, fecha, motivo_consulta, peso, altura, imc, igc, tratamiento, observaciones, id_doctor)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$statement2 = $conn->prepare($sql_historia);
+$statement2->bind_param("issddddssi", $id_paciente, $fecha, $motivo_consulta, $peso, $altura, $imc, $igc, $tratamiento, $observaciones, $id_doctor);
+$statement2->execute();
+
 
         $conn->commit();
 

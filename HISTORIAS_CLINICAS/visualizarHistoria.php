@@ -10,6 +10,9 @@ if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
     header("Location: index.php");
     exit;
 }
+//fin proteger
+
+
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -20,10 +23,13 @@ if ($conn->connect_error) {
 $id = $_GET['id_historia'];
 
 $sql = "SELECT h.id_historia, h.fecha, h.motivo_consulta, h.peso, h.altura, h.imc, h.igc, h.tratamiento, h.observaciones, 
-               p.id_paciente, p.nombre_paciente,p.fecha_nacimiento, p.sexo
+               p.id_paciente, p.nombre_paciente, p.fecha_nacimiento, p.sexo,
+               d.nombre_doctor, d.especialidad
         FROM historias h
         INNER JOIN pacientes p ON h.id_paciente = p.id_paciente
+        LEFT JOIN doctor d ON h.id_doctor = d.id_doctor
         WHERE h.id_historia = $id";
+
 $result = $conn->query($sql);
 
 ?>
@@ -62,6 +68,14 @@ $result = $conn->query($sql);
     echo "<h3>Datos del Paciente</h3>";
     echo "<p><strong>Nombre:</strong> " . $row['nombre_paciente'] . "</p>";
     echo "<p><strong>fecha_nacimiento:</strong> " . $row['fecha_nacimiento'] . "</p>";
+    
+    //obtener edad
+    $año_nacimiento = date("Y", strtotime($row['fecha_nacimiento']));
+    $año_hoy = date("Y");
+    $edad = $año_hoy - $año_nacimiento;
+    //fin edad
+
+    echo "<p><strong> Edad: </strong>$edad años</p>";
     echo "<p><strong>Sexo:</strong> " . $row['sexo'] . "</p>";
                
     echo "<h2>Historia Clínica</h2>";
@@ -72,12 +86,16 @@ $result = $conn->query($sql);
     echo "<p><strong>imc:</strong> " . $row['imc'] . "</p>";
     echo "<p><strong>igc:</strong> " . $row['igc'] . "</p>";
     echo "<p><strong>Observaciones:</strong> " . $row['observaciones'] . "</p>
-
+    
       <table>
                         <tr>
                             <th>Fecha</th>
                             <th>Procedimiento y/o tratamiento</th>
                         </tr>";
+    echo "<h3>Doctor a cargo</h3>";
+    echo "<p><strong>Nombre del doctor:</strong> " . $row['nombre_doctor'] . "</p>";
+    echo "<p><strong>Especialidad:</strong> " . $row['especialidad'] . "</p>";
+
     $fechas = explode("\n", $row['fecha']);
                 $procedimientos = explode("\n", $row['tratamiento']);
                 for ($i = 0; $i < count($fechas); $i++) {
