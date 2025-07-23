@@ -105,10 +105,6 @@ $result = $conn->query($sql);
                           </tr>";
                 }
 
-
-
-    
-    
                 echo "</table>
                 <br>
                     <div class='acciones'>

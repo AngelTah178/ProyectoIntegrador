@@ -9,7 +9,7 @@ $conn->set_charset("utf8");
 
 session_start();
 if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
-    header("Location: login.php");
+    header("Location: update.php");
     exit;
 }
 
