@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 $id = $_GET['id_historia'];
 
 $sql = "SELECT h.id_historia, h.fecha, h.motivo_consulta, h.peso, h.altura, h.imc, h.igc, h.tratamiento, h.observaciones, 
-               p.id_paciente, p.nombre_paciente, p.fecha_nacimiento, p.sexo,
+               p.id_paciente, p.nombre_paciente, p.fecha_nacimiento, p.sexo,p.telefono, p.ocupacion, p.estado_civil,
                d.nombre_doctor, d.especialidad
         FROM historias h
         INNER JOIN pacientes p ON h.id_paciente = p.id_paciente
@@ -77,6 +77,9 @@ $result = $conn->query($sql);
 
     echo "<p><strong> Edad: </strong>$edad años</p>";
     echo "<p><strong>Sexo:</strong> " . $row['sexo'] . "</p>";
+        echo "<p><strong>Telefono:</strong> " . $row['telefono'] . "</p>";
+        echo "<p><strong>Ocupacion:</strong> " . $row['ocupacion'] . "</p>";
+            echo "<p><strong>Estado civil:</strong> " . $row['estado_civil'] . "</p>";
                
     echo "<h2>Historia Clínica</h2>";
 

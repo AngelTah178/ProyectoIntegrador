@@ -32,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $altura = $_POST['altura'];
         $imc= $_POST['imc'];
     $igc = $_POST['igc'];
+    $observaciones = $_POST['observaciones'];
 
     $nueva_fecha = $_POST['nueva_fecha'];
     $nuevo_procedimiento = $_POST['nuevo_procedimiento'];
@@ -82,17 +83,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             imc = ?, 
             igc = ?, 
             fecha = ?, 
-            tratamiento = ?
+            tratamiento = ?,
+            observaciones = ?
           WHERE id_historia = ?";
 $stmt_h = $conn->prepare($sql_h);
-$stmt_h->bind_param("sddddssi", 
+$stmt_h->bind_param("sddddsssi", 
     $motivo_consulta, 
     $peso, 
     $altura, 
     $imc, 
     $igc, 
     $fecha_actualizada, 
-    $procedimiento_actualizado, 
+    $procedimiento_actualizado,
+    $observaciones, 
     $id_historia
 );
 
@@ -170,22 +173,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             <textarea id="motivo_consulta" name="motivo_consulta" required><?php echo htmlspecialchars($row['motivo_consulta']); ?></textarea>
 
              <label for="peso">Peso:</label>
-            <textarea id="peso" name="peso" required><?php echo htmlspecialchars($row['peso']); ?></textarea>
+            <textarea id="peso" name="peso"><?php echo htmlspecialchars($row['peso']); ?></textarea>
 
              <label for="altura">Altura:</label>
-            <textarea id="altura" name="altura" required><?php echo htmlspecialchars($row['altura']); ?></textarea>
+            <textarea id="altura" name="altura"><?php echo htmlspecialchars($row['altura']); ?></textarea>
 
              <label for="imc">IMC:</label>
-            <textarea id="imc" name="imc" required><?php echo htmlspecialchars($row['imc']); ?></textarea>
+            <textarea id="imc" name="imc"><?php echo htmlspecialchars($row['imc']); ?></textarea>
 
              <label for="igc">IGC:</label>
-            <textarea id="igc" name="igc" required><?php echo htmlspecialchars($row['igc']); ?></textarea>
+            <textarea id="igc" name="igc"><?php echo htmlspecialchars($row['igc']); ?></textarea>
 
             <label for="nueva_fecha">Agregar Nueva Fecha:</label>
             <input type="date" id="nueva_fecha" name="nueva_fecha" required>
 
             <label for="nuevo_procedimiento">Agregar Nuevo Procedimiento y/o tratamiento:</label>
             <textarea id="nuevo_procedimiento" name="nuevo_procedimiento" required></textarea>
+
+             <label for="observaciones">Observaciones:</label>
+            <textarea id="observaciones" name="observaciones"><?php echo htmlspecialchars($row['observaciones']); ?></textarea>
 
             <input type="submit" value="ACTUALIZAR">
         </form>
