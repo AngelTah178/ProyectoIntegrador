@@ -1,0 +1,154 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #f5f5f5;
+}
+
+/* Navbar */
+.Navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(45, 125, 160);
+  color: white;
+  padding: 15px 30px;
+}
+
+.Navbar a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.Navbar h1 {
+  margin: 0;
+  font-size: 24px;
+  width: 820px;
+}
+
+span{
+  color: white;
+}
+
+/* Caja centrada */
+.historias-container {
+  background-color: white;
+  width: 1000px;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Títulos secciones */
+h2 {
+  color: rgb(45, 125, 160);
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* Texto */
+.historias-container p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+/* Tabla */
+table {
+  width: 800px;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 18px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background-color: #e0f0f6;
+}
+
+/* Botones */
+.acciones {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.boton {
+  background-color: rgb(45, 125, 160);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.boton:hover {
+  background-color: rgb(35, 105, 140);
+}
+
+/*AQUI EMPIEZA EL DESMADRE*/
+
+.Nombres{
+  display: grid;
+  grid-template-columns: repeat(3, 2fr);
+  width: 100%;
+  margin: 10px 5px;
+  justify-items: left;
+  align-items: left;
+  gap: 20px;
+}
+
+.Nombres div{
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Medidas{
+  display: grid;
+  grid-template-columns: repeat(4, 2fr);
+  width: 100%;
+  margin: 10px 5px;
+  justify-items: left;
+  align-items: center;
+}
+
+.Area{
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  width: 100%;
+  gap: 150px;
+  margin: 10px 5px;
+  justify-items: left;
+  align-items: left;
+}
+
+.eliminar{
+ background-color: red;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.eliminar:hover{
+  background-color: darkred;
+}
+
+p{
+  font-size: 24px;
+}
+

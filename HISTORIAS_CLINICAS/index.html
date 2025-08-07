@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>Ingreso al sistema</title>
+    <link rel="stylesheet" href="CSS/inicio.css">
     <script>
-        window.onload = function () {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('error') === '1') {
-                document.getElementById("mensajeError").textContent = "MAMAHUEVO.";
-                document.getElementById("mensajeError").style.display = "block";
-            }
-        }
+      window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error') === '1') {
+      const errorBox = document.getElementById("mensajeError");
+      errorBox.textContent = "Contraseña incorrecta";
+      errorBox.classList.add("mostrar"); 
+    }
+  };
     </script>
-</head>
-<body>
-    <h2>Ingresa tu PIN para acceder</h2>
-    
-    <p id="mensajeError"></p>
+  </head>
+  <body>
+    <div class = "login">
 
-    <form method="POST" action="Login.php">
-        <input type="password" name="pin" required>
-        <input type="submit" value="Ingresar">
-    </form>
-</body>
+      <h1>Recepción</h1>
+
+      
+        <p id="mensajeError" class = "error"></p>
+
+        <form method="POST" action="Login.php">
+        
+        <input type="password" name="pin" placeholder="Contraseña" required>
+        <input type="submit" value="Iniciar sesión">
+      </form>
+    </div>
+    
+  </body>
 </html>
 

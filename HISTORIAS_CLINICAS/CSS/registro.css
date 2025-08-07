@@ -1,0 +1,235 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #f5f5f5;
+}
+
+/* Navbar */
+.Navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(45, 125, 160);
+  color: white;
+  padding: 15px 30px;
+}
+
+.Navbar a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.Navbar h1 {
+  margin: 0;
+  font-size: 24px;
+  width: 890px;
+}
+
+span{
+  color: white;
+}
+
+/* Formulario principal */
+.registro {
+  background-color: white;
+  max-width: 650px;
+  margin: 30px auto;
+  padding: 30px 50px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  padding: auto;
+  color: rgb(45, 125, 160);
+}
+
+/* Labels y campos */
+label {
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.Fecha{
+  width: 135%;
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  margin: 10px 5px;
+  justify-items: left;
+  align-items: left;
+}
+
+.Fecha input[type = "date"]{
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  width: 140px; 
+  box-sizing: border-box;
+}
+
+.Fecha div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+}
+
+.Fecha .dia{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: left;
+}
+
+.Fecha .radio-group{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.Fecha .radio-group label{
+  font-weight: normal;
+}
+
+.Nombres{
+  display: grid;
+  grid-template-columns: repeat(3, 2fr);
+  gap: 0px;
+  width: 630px;
+  margin: 10px 5px;
+  justify-items: left;
+  align-items: left;
+}
+
+.Nombres input[type = "text"]{
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  width: 180px; 
+  height: 28px;
+  text-align: left; 
+  box-sizing: border-box;
+}
+
+.Nombres div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+}
+
+.Datos{
+  display: grid;
+  grid-template-columns: repeat(4, 2fr);
+  gap: 16px;
+  width: 630px;
+  margin: 10px 5px;
+  justify-items: left;
+  align-items: left;
+}
+
+.Datos input[type = "number"]{
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 90px;
+  height: 28px;
+  text-align: center; 
+  box-sizing: border-box;
+}
+
+.Datos div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+}
+
+input[type="text"]{
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  width: 200px; 
+  box-sizing: border-box;
+}
+
+textarea {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  width: 200px; 
+  box-sizing: border-box;
+}
+
+textarea{
+  width: 100%;
+}
+
+/* Botón */
+input[type="submit"] {
+  margin-top: 20px;
+  padding: 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: rgb(45, 125, 160);
+  width: 200px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.Botones{
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  gap: 0px;
+  width: 630px;
+  margin: 10px 5px;
+  justify-items: center;
+  align-items: left;
+}
+
+.cancelar {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 6px;
+  background-color:  red;
+  transition: background-color 0.3s ease;
+  width: 170px;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.cancelar:hover{
+  background-color:  darkred;
+}
+
+
+
+
+
+
+

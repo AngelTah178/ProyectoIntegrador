@@ -1,128 +1,144 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "historias_clinicas";
-//proteger
-session_start();
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "historias_clinicas";
+  //proteger
+  session_start();
 
-if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
+  if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
     header("Location: index.php");
     exit;
-}
-//fin proteger
+  }
+  //fin proteger
 
 
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
+  // Crear conexión
+  $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexión
-if ($conn->connect_error) {
+  // Verificar conexión
+  if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-}
-$id = $_GET['id_historia'];
+  }
+  $id = $_GET['id_historia'];
 
-$sql = "SELECT h.id_historia, h.fecha, h.motivo_consulta, h.peso, h.altura, h.imc, h.igc, h.tratamiento, h.observaciones, 
-               p.id_paciente, p.nombre_paciente, p.fecha_nacimiento, p.sexo,p.telefono, p.ocupacion, p.estado_civil,
-               d.nombre_doctor, d.especialidad
-        FROM historias h
-        INNER JOIN pacientes p ON h.id_paciente = p.id_paciente
-        LEFT JOIN doctor d ON h.id_doctor = d.id_doctor
-        WHERE h.id_historia = $id";
+  $sql = "SELECT h.id_historia, h.fecha, h.motivo_consulta, h.peso, h.altura, h.imc, h.igc, h.tratamiento, h.observaciones, 
+  p.id_paciente, p.nombre_paciente, p.apellido_p, p.apellido_m,  p.fecha_nacimiento, p.sexo,p.telefono, p.ocupacion, p.estado_civil,
+  d.nombre_doctor, d.especialidad
+  FROM historias h
+  INNER JOIN pacientes p ON h.id_paciente = p.id_paciente
+  LEFT JOIN doctor d ON h.id_doctor = d.id_doctor
+  WHERE h.id_historia = $id";
 
-$result = $conn->query($sql);
+  $result = $conn->query($sql);
 
 ?>
 <!--FIN DE PHP PARA MOSTRAR-->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="index.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/CSS/visualizar.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <title>Historias Clínicas Dermatología</title>
     <script>
-        function confirmDeletion(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar esta historia clínica?")) {
-                window.location.href = "delete.php?id=" + id;
-            }
+      function confirmDeletion(id) {
+        if (confirm("¿Estás seguro de que deseas eliminar esta historia clínica?")) {
+          window.location.href = "delete.php?id=" + id;
         }
+      }
     </script>
-</head>
-<body>
-    <header class="titulo">
-        <h1>Historias Clínicas Dermatología</h1>
-    </header>
+  </head>
+  
+  <body>
 
-</form>
-
+    <div class = "Navbar">    
+      <a href="index.php"><span class="material-symbols-outlined">arrow_back</span></a>
+      <h1>Historia Clínica</h1>
     </div>
-
+    
     <br>
 
     <div class="historias-container">
-        <?php
+      <?php
         if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                
-    echo "<h3>Datos del Paciente</h3>";
-    echo "<p><strong>Nombre:</strong> " . $row['nombre_paciente'] . "</p>";
-    echo "<p><strong>fecha_nacimiento:</strong> " . $row['fecha_nacimiento'] . "</p>";
-    
-    //obtener edad
-    $año_nacimiento = date("Y", strtotime($row['fecha_nacimiento']));
-    $año_hoy = date("Y");
-    $edad = $año_hoy - $año_nacimiento;
-    //fin edad
+          while($row = $result->fetch_assoc()) {
+              
+            //obtener edad
+            $año_nacimiento = date("Y", strtotime($row['fecha_nacimiento']));
+            $año_hoy = date("Y");
+            $edad = $año_hoy - $año_nacimiento;
+            //fin edad
 
-    echo "<p><strong> Edad: </strong>$edad años</p>";
-    echo "<p><strong>Sexo:</strong> " . $row['sexo'] . "</p>";
-        echo "<p><strong>Telefono:</strong> " . $row['telefono'] . "</p>";
-        echo "<p><strong>Ocupacion:</strong> " . $row['ocupacion'] . "</p>";
-            echo "<p><strong>Estado civil:</strong> " . $row['estado_civil'] . "</p>";
-               
-    echo "<h2>Historia Clínica</h2>";
+            echo "<div class = 'Area'>";
+              echo "<p><strong>Doctor:</strong> {$row['nombre_doctor']}</p>";
+              echo "<p><strong>Especialidad:</strong> {$row['especialidad']}</p>";
+            echo "</div>";
 
-    echo "<p><strong>Motivo consulta:</strong> " . $row['motivo_consulta'] . "</p>";
-    echo "<p><strong>Peso:</strong> " . $row['peso'] . "</p>";
-    echo "<p><strong>Altura:</strong> " . $row['altura'] . "</p>";
-    echo "<p><strong>imc:</strong> " . $row['imc'] . "</p>";
-    echo "<p><strong>igc:</strong> " . $row['igc'] . "</p>";
-    echo "<p><strong>Observaciones:</strong> " . $row['observaciones'] . "</p>
-    
-      <table>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Procedimiento y/o tratamiento</th>
-                        </tr>";
-    echo "<h3>Doctor a cargo</h3>";
-    echo "<p><strong>Nombre del doctor:</strong> " . $row['nombre_doctor'] . "</p>";
-    echo "<p><strong>Especialidad:</strong> " . $row['especialidad'] . "</p>";
+            echo "<br>";
+            
+            echo "<div> <p><strong>Paciente:</strong> {$row['nombre_paciente']} {$row['apellido_p']} {$row['apellido_m']}</p> </div>";
 
-    $fechas = explode("\n", $row['fecha']);
-                $procedimientos = explode("\n", $row['tratamiento']);
-                for ($i = 0; $i < count($fechas); $i++) {
-                    echo "<tr>
-                            <td>{$fechas[$i]}</td>
-                            <td>{$procedimientos[$i]}</td>
-                          </tr>";
-                }
+            echo "<br>";
 
-                echo "</table>
-                <br>
-                    <div class='acciones'>
-                        <a class='boton' href='update.php?id_historia={$row['id_historia']}'>Modificar consulta</a>
-                        <a class='boton' href='javascript:void(0);' onclick='confirmDeletion(" . htmlspecialchars($row['id_historia']) . ");'>ELIMINAR HISTORIA MÉDICA</a>
-                    </div>
-                </div>
-                <br>";
-            }
-        } else {
-            echo "<p>No hay historias clínicas</p>";
+            echo "<div class = Nombres>";    
+              echo "<div> <p><strong>Edad:</strong> {$edad} años</p> </div>";
+              echo "<div> <p><strong>Sexo:</strong> {$row['sexo']}</p> </div>";
+              echo "<div> <p><strong>Teléfono:</strong> {$row['telefono']}</p> </div>";
+              echo "<div> <p><strong>Ocupación:</strong> {$row['ocupacion']}</p> </div>";
+              echo "<div> <p><strong>Estado Civil:</strong> {$row['estado_civil']}</p> </div>";
+            echo "</div>";
+
+            echo "<br>";
+
+            echo "<div class = 'Medidas'>";
+              echo "<div><p><strong>Peso:</strong> " . ($row['peso'] != 0 ? "{$row['peso']} kg" : "") . "</p></div>";
+              echo "<div><p><strong>Altura:</strong> " . ($row['altura'] != 0 ? "{$row['altura']} m" : "") . "</p></div>";
+              echo "<div><p><strong>IMC:</strong> " . ($row['imc'] != 0 ? "{$row['imc']}" : "") . "</p></div>";
+              echo "<div><p><strong>IGC:</strong> " . ($row['igc'] != 0 ? "{$row['igc']}" : "") . "</p></div>";
+            echo "</div>";
+
+            echo "<br>";
+            
+            echo "<p><strong>Motivo de consulta:</strong> {$row['motivo_consulta']}</p>";
+
+            echo "<br>";
+
+            echo "<p><strong>Observaciones:</strong> {$row['observaciones']}</p>";
+
+            echo "<br>";
+
+            echo "<table>
+              <tr>
+                <th>Fecha</th>
+                <th>Tratamiento</th>
+              </tr>";
+          
+              $fechas = explode("\n", $row['fecha']);
+              $procedimientos = explode("\n", $row['tratamiento']);
+              for ($i = 0; $i < count($fechas); $i++) {
+                echo "<tr>
+                  <td>{$fechas[$i]}</td>
+                  <td>{$procedimientos[$i]}</td>
+                </tr>";
+              }
+            echo "</table>";
+
+            echo "<div class='acciones'>
+              <a class='boton' href='update.php?id_historia={$row['id_historia']}'>Agregar consulta</a>
+              <a class='eliminar' href='javascript:void(0);' onclick='confirmDeletion({$row['id_historia']});'>Eliminar historia médica</a>
+            </div>
+            <br>";
+          }
         }
-        ?>
+        else {
+          echo "<p>No hay historias clínicas</p>";
+        }
+        $conn->close();
+      ?>
     </div>
-
-    <?php $conn->close(); ?>
-</body>
+  </body>
 </html>
